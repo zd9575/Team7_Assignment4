@@ -1,4 +1,4 @@
-package sams2024.src.DTO;
+package assign4.src.DTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

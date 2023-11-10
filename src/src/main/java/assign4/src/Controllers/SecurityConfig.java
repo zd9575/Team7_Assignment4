@@ -1,4 +1,4 @@
-package sams2024.src.Controllers;
+package assign4.src.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

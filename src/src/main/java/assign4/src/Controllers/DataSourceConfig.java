@@ -1,4 +1,4 @@
-package sams2024.src.Controllers;
+package assign4.src.Controllers;
 
 import javax.sql.DataSource;
 
@@ -12,7 +12,7 @@ public class DataSourceConfig {
     public DataSource getDataSource() {
         return DataSourceBuilder.create()
                 .driverClassName("org.postgresql.Driver")
-                .url("jdbc:postgresql://localhost:9000/Sam24db")
+                .url("jdbc:postgresql://localhost:9000/assign4")
                 .username("postgres")
                 .password("rootpassword")
                 .build();

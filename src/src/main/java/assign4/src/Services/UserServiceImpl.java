@@ -1,12 +1,11 @@
-package sams2024.src.Services;
-
-import sams2024.src.DTO.MemberDto;
-import sams2024.src.Models.Users.Member;
-
-import sams2024.src.Repositories.Users.MemberRepository;
+package assign4.src.Services;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import assign4.src.DTO.MemberDto;
+import assign4.src.Models.Users.Member;
+import assign4.src.Repositories.Users.MemberRepository;
 
 @Service
 public class UserServiceImpl implements UserService {

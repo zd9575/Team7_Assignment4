@@ -1,11 +1,11 @@
-package sams2024.src.Services;
+package assign4.src.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import sams2024.src.Models.Users.Member;
-import sams2024.src.Repositories.Users.MemberRepository;
+import assign4.src.Models.Users.Member;
+import assign4.src.Repositories.Users.MemberRepository;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -9,7 +9,7 @@
 		<version>3.1.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>sams2024</groupId>
+	<groupId>assign4</groupId>
 	<artifactId>src</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>src</name>

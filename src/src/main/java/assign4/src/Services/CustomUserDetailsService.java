@@ -1,4 +1,4 @@
-package sams2024.src.Services;
+package assign4.src.Services;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import sams2024.src.Models.Users.Member;
-import sams2024.src.Repositories.Users.MemberRepository;
+import assign4.src.Models.Users.Member;
+import assign4.src.Repositories.Users.MemberRepository;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
