@@ -7,11 +7,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import assign4.src.Models.Users.Member;
-import assign4.src.Repositories.Users.MemberRepository;
+import assign4.src.Models.Member;
+import assign4.src.Repositories.MemberRepository;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -26,19 +26,18 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Member member = memberRepository.findByEmail(email);
 
-        if (member != null) {
-            return new org.springframework.security.core.userdetails.User(member.getEmail(),
-                    member.getPassword(),
-                    mapRolesToAuthorities(member.getRoles()));
-        } else {
-            throw new UsernameNotFoundException("Invalid username or password.");
+        if (member == null) {
+            throw new UsernameNotFoundException("User not found with email: " + email);
         }
+
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(member.getEmail())
+                .password(member.getPassword())
+                .authorities(getAuthorities(member.getRole()))
+                .build();
     }
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<String> roles) {
-        Collection<? extends GrantedAuthority> mapRoles = roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role))
-                .collect(Collectors.toList());
-        return mapRoles;
+    private Collection<? extends GrantedAuthority> getAuthorities(String role) {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role));
     }
 }

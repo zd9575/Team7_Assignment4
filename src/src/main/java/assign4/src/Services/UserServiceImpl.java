@@ -4,8 +4,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import assign4.src.DTO.MemberDto;
-import assign4.src.Models.Users.Member;
-import assign4.src.Repositories.Users.MemberRepository;
+import assign4.src.Models.Member;
+import assign4.src.Repositories.MemberRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
         member.setFirstName(memberDto.getFirstName());
         member.setLastName(memberDto.getLastName());
         member.setEmail(memberDto.getEmail());
-        // encrypt the password using spring security
         member.setPassword(passwordEncoder.encode(memberDto.getPassword()));
 
         memberRepository.save(member);

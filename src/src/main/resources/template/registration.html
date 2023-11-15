@@ -11,7 +11,7 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" th:href="@{/registration}">Registration</a>
+      <a class="navbar-brand" th:href="@{/registerHandling}">Registration</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -38,7 +38,7 @@
           </div>
         </div>
         <div class="card-body">
-          <form method="post" role="form" th:action="@{/register}" th:object="${member}">
+          <form th:action="@{/registerHandling}" th:object="${member}" method="post" role="form">
             <div class="form-group mb-3">
               <label class="form-label">First Name</label>
               <input class="form-control" id="firstName" name="firstName" placeholder="Enter first name"
@@ -66,16 +66,16 @@
             </div>
             <div class="row">
               <div class="col-md-12 form-group">
-                <select class="form-control" name="selectedRole">
-                  <option value="manager">Manager</option>
-                  <option value="employee">Employee</option>
-                  <option value="customer">Customer</option>
+                <select class="form-control" name="selectedRole" th:field="*{role}">
+                  <option value="PCM">PCM</option>
+                  <option value="PCC">PCC</option>
+                  <option value="Author">Author</option>
                 </select>
               </div>
             </div>
             <br>
             <div class="form-group">
-              <button class="btn btn-primary" type="submit">Register</button>
+              <button class="btn btn-primary" type="submit" >Register</button>
               <span>Already registered? <a th:href="@{/login}">Login here</a></span>
             </div>
           </form>

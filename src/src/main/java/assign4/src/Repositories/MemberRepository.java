@@ -1,9 +1,11 @@
-package assign4.src.Repositories.Users;
+package assign4.src.Repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import assign4.src.Models.Users.Member;
+import assign4.src.Models.Member;
 
+@Repository
 public interface MemberRepository extends JpaRepository<Member, String> {
     Member findByEmail(String email);
 }

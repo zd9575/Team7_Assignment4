@@ -1,38 +1,36 @@
-package assign4.src.Models.Users;
+package assign4.src.Models;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
+import jakarta.validation.constraints.*;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
-public class Member implements UserDetails {
+public class Member {
 
     @Id
     @Email
     @NotEmpty
+    @Column(name = "email")
     private String email;
 
     @NotEmpty
+    @Column(name = "password")
     private String password;
 
     @NotEmpty
+    @Column(name = "first_name")
     private String firstName;
 
     @NotEmpty
+    @Column(name = "last_name")
     private String lastName;
 
     @NotEmpty
+    @Column(name = "role")
     private String role;
 
     public String getEmail() {
@@ -75,33 +73,6 @@ public class Member implements UserDetails {
         this.role = role;
     }
 
-    @Override
-    public Set<GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority("USER"));
-        return authorities;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
     public Member(String email, String firstName, String lastName, String password, String role) {
         this.email = email;
         this.firstName = firstName;
@@ -114,11 +85,6 @@ public class Member implements UserDetails {
         // Default no-argument constructor.
     }
 
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -126,7 +92,7 @@ public class Member implements UserDetails {
      */
     @Override
     public String toString() {
-        return "email:" + email + "password=" + password + "]";
+        return "[email: " + email + " password= " + password + "role: " + role + "]";
     }
 
     public Collection<String> getRoles() {

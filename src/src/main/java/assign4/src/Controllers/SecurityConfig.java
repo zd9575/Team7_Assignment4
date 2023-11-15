@@ -26,12 +26,12 @@ public class SecurityConfig {
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                 http.csrf().disable()
                                 .authorizeHttpRequests(
-                                                (authorize) -> authorize.requestMatchers("/register").permitAll())
-                                .formLogin(
-                                                form -> form
-                                                                .loginPage("/login")
-                                                                .loginProcessingUrl("/")
-                                                                .permitAll())
+                                                (authorize) -> authorize.requestMatchers("/register").permitAll()
+                                                                .requestMatchers("/registerHandling").permitAll())
+                                .formLogin(form -> form
+                                                .loginPage("/login")
+                                                .loginProcessingUrl("/memberPage") 
+                                                .permitAll())
                                 .logout(
                                                 logout -> logout
                                                                 .logoutRequestMatcher(

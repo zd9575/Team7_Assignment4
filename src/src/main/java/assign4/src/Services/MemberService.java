@@ -4,11 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import assign4.src.Models.Users.Member;
-import assign4.src.Repositories.Users.MemberRepository;
-
-import java.util.ArrayList;
-import java.util.List;
+import assign4.src.Models.Member;
+import assign4.src.Repositories.MemberRepository;
 
 @Service
 public class MemberService {
@@ -20,24 +17,22 @@ public class MemberService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         member.setPassword(encoder.encode(member.getPassword()));
 
-        Member memberRole = memberRepository.findByEmail(member.getEmail());
+        Member existingMember = memberRepository.findByEmail(member.getEmail());
 
-        if (memberRole == null) {
-            // Save the selected role
-            memberRole = new Member(member.getEmail(), member.getFirstName(), member.getLastName(),
+        if (existingMember == null) {
+            Member newMember = new Member(member.getEmail(), member.getFirstName(), member.getLastName(),
                     member.getPassword(), selectedRole);
-            memberRepository.save(memberRole);
+            memberRepository.save(newMember);
+            
+            return newMember;
+        } else {
+            System.out.println("Member already exists");
+            return existingMember;
         }
-
-        List<Member> membersList = new ArrayList<>();
-        membersList.add(memberRole);
-        member.setRole(selectedRole);
-        memberRepository.save(member);
-        return member;
     }
 
     public Member verifyMember(Member member) {
+        // Additional verification logic if needed
         return member;
     }
-
 }
