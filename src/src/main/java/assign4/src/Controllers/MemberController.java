@@ -1,9 +1,11 @@
 package assign4.src.Controllers;
 
 import java.io.IOException;
+import java.util.List;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -72,16 +74,20 @@ public class MemberController {
     }
 
 
+
+
     @GetMapping("/memberPage")
     public String memberDashboard(Model model) { 
         Member currentMember = (Member) model.getAttribute("currentMember");
-
         if (currentMember != null) {
             model.addAttribute("memberName", currentMember.getFirstName() + " " + currentMember.getLastName());
+
             return "memberDash";
         } else {
             return "redirect:/login";
         }
+
+
     }
 
     @GetMapping("/register")

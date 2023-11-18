@@ -34,12 +34,43 @@
         <div class="row">
             <h1 class="text-center" th:text="'Hello ' + ${currentMember.firstName} + ' ' + ${currentMember.lastName} + ':' + ${currentMember.role}"></h1>
         
-            <button  th:onclick="${currentMember.role == 'PCM'} ? 'window.location.href = \'https://www.google.com\'' : 'alert(\'You are not authenticated to click this button.\')'">PCM</button>
+            <button  th:onclick="${currentMember.role == 'Employee'} ? 'window.location.href = \'https://www.google.com\'' : 'alert(\'You are not authenticated to click this button.\')'">Employee</button>
             
-            <button  th:onclick="${currentMember.role == 'Author'} ? 'window.location.href = \'https://www.google.com\'' : 'alert(\'You are not authenticated to click this button.\')'">Author</button>
-            
-            <button th:onclick="${currentMember.role == 'PCC'} ? 'window.location.href = \'https://www.google.com\'' : 'alert(\'You are not authenticated to click this button.\')'">PCC</button>
+            <button  th:onclick="${currentMember.role == 'Manager'} ? 'window.location.href = \'https://www.google.com\'' : 'alert(\'You are not authenticated to click this button.\')'">Manager</button>
+
         </div>
+
+        <br>
+
+        <div class="row">
+            <form th:if="${currentMember.role == 'Manager'}" th:action="@{/formData}" th:object="${data}" method="post" role="form">
+            <input th:field="*{textAreaValue}" type="textarea" id="taskInput" placeholder="Define your task">
+            <input th:field="*{emailValue}" type="email" id="emailInput" placeholder="Enter employee email">
+            <button type="submit" id="submitButton">Submit</button>
+            </form>
+        </div>
+
+        <script th:inline="javascript">
+        function createTextArea() {
+            var textArea = document.getElementById("taskInput");
+            textArea.setAttribute("rows", "1");
+            textArea.setAttribute("cols", "50");
+            textArea.setAttribute("placeholder", "Define your task");
+
+            document.getElementById("taskInput").style.display = "block";
+            document.getElementById("emailInput").style.display = "block";
+            document.getElementById("submitButton").style.display = "block";
+
+        }
+
+        function submitForm() {
+            textareaValue = document.getElementById("taskInput").value;
+           emailValue = document.getElementById("emailInput").value;
+            console.log("Text Area Value: " + textareaValue);
+            console.log("Email Value: " + emailValue);
+        }
+    </script>
+
     </div>
 </body>
 
