@@ -1,5 +1,7 @@
 package assign4.src.Services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,7 +34,10 @@ public class MemberService {
     }
 
     public Member verifyMember(Member member) {
-        // Additional verification logic if needed
         return member;
+    }
+    
+    public List<Member> getAllEmployees() {
+        return memberRepository.findAllByRole("Employee");
     }
 }

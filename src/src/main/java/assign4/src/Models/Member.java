@@ -2,11 +2,10 @@ package assign4.src.Models;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import jakarta.validation.constraints.*;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Member {
@@ -32,6 +31,9 @@ public class Member {
     @NotEmpty
     @Column(name = "role")
     private String role;
+
+    @OneToMany(mappedBy = "assignedMember")
+    private List<Task> tasks;
 
     public String getEmail() {
         return email;

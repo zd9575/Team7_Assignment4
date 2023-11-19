@@ -27,10 +27,11 @@ public class SecurityConfig {
                 http.csrf().disable()
                                 .authorizeHttpRequests(
                                                 (authorize) -> authorize.requestMatchers("/register").permitAll()
-                                                                .requestMatchers("/registerHandling").permitAll())
+                                                                .requestMatchers("/registerHandling").permitAll()
+                                                                .requestMatchers("/taskHandling").permitAll())
                                 .formLogin(form -> form
                                                 .loginPage("/login")
-                                                .loginProcessingUrl("/memberPage") 
+                                                .loginProcessingUrl("/memberPage")
                                                 .permitAll())
                                 .logout(
                                                 logout -> logout
