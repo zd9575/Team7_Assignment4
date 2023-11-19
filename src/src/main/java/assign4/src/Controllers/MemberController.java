@@ -106,4 +106,9 @@ public class MemberController {
         memberService.createMember(member, selectedRole);
         return "login";
     }
+
+    @GetMapping("/createTasks")
+    public String showCreateTasks(){
+        return "createTasks";
+    }
 }

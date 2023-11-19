@@ -39,39 +39,15 @@
             <button  th:onclick="${currentMember.role == 'Manager'} ? 'window.location.href = \'https://www.google.com\'' : 'alert(\'You are not authenticated to click this button.\')'">Manager</button>
 
         </div>
-
+    </div>
         <br>
 
-        <div class="row">
-            <form th:if="${currentMember.role == 'Manager'}" th:action="@{/formData}" th:object="${data}" method="post" role="form">
-            <input th:field="*{textAreaValue}" type="textarea" id="taskInput" placeholder="Define your task">
-            <input th:field="*{emailValue}" type="email" id="emailInput" placeholder="Enter employee email">
-            <button type="submit" id="submitButton">Submit</button>
-            </form>
-        </div>
+    <div th:if="${currentMember.role == 'Manager'}">
 
-        <script th:inline="javascript">
-        function createTextArea() {
-            var textArea = document.getElementById("taskInput");
-            textArea.setAttribute("rows", "1");
-            textArea.setAttribute("cols", "50");
-            textArea.setAttribute("placeholder", "Define your task");
-
-            document.getElementById("taskInput").style.display = "block";
-            document.getElementById("emailInput").style.display = "block";
-            document.getElementById("submitButton").style.display = "block";
-
-        }
-
-        function submitForm() {
-            textareaValue = document.getElementById("taskInput").value;
-           emailValue = document.getElementById("emailInput").value;
-            console.log("Text Area Value: " + textareaValue);
-            console.log("Email Value: " + emailValue);
-        }
-    </script>
-
+        <a th:href="@{/createTasks}">Create Task</a>
     </div>
+
+
 </body>
 
 </html>
