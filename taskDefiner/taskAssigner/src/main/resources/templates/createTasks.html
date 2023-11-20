@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registration and Login System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="card-body">
+    <form th:action="@{/createTasks}" th:object="${tasks}" method="post" role="form" th:if="${currentMember.role == 'Employee'}">
+
+        <div class="form-group mb-3">
+            <input class="form-control" id="task" name="task" placeholder="Enter employee task"
+                    type="text" />
+        </div>
+
+        <div class="form-group mb-3">
+            <input class="form-control" id="email" name="email" placeholder="Enter employee email"
+                    type="text" />
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit" >Create Task</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
