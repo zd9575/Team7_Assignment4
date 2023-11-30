@@ -40,10 +40,24 @@ public class MemberController {
         Member verifyMember = memberRepository.findByEmail(member.getEmail());
 
         if (verifyMember != null) { // Check verifyMember, not member
+            // PASSWORD ENCRYPTION FAILURE (ARCH BREAKER 3)
+            /* If the login password is not encoded, and the database password is, it will fail to login
+            *  passwordMatchFail will check if the passwords are the same, whereas passwordEncoder encodes
+            *  the raw password to compare with the encoded password
+            */
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            if (passwordEncoder.matches(member.getPassword(), verifyMember.getPassword())) {
+            boolean passwordsMatch = passwordEncoder.matches(member.getPassword(), verifyMember.getPassword());
+
+            boolean passwordsMatchFail = member.getPassword().equals(verifyMember.getPassword());
+            if (passwordsMatch) {
                 String memberRole = verifyMember.getRole();
                 if (memberRole != null) {
+                    // AUTHENTICATION FAILURE (ARCH BREAKER 1)
+                    /*
+                     * Users will try to log in but if the user is not added to the model object
+                     * of the spring boot controller, they will fail to login and be redirected 
+                     * back to the login page.
+                     */
                     model.addAttribute("currentMember", verifyMember);
                     return "redirect:/memberPage";
                 }
@@ -122,6 +136,16 @@ public class MemberController {
         Long randomTaskId;
         Member currentMember = (Member) model.getAttribute("currentMember");
 
+        // AUTHORIZATION FAILURE (ARCH BREAKER 2)
+        /* If the task form fails to check the role of the current member logged in, it
+         * will result in an authorization failure. 
+         */
+        // if(currentMember.getRole() != "Manager"){
+        //     List<Task> allTasks = taskService.getAllTasks(currentMember);
+        //     model.addAttribute("allTasks", allTasks);
+        //     return "memberDash";
+        // }
+
         Member assignedMember = task.getAssignedMember();
         model.addAttribute("members", memberService.getAllEmployees());
         do {
@@ -132,7 +156,6 @@ public class MemberController {
         task.setAssignedMember(assignedMember);
         taskService.saveTask(task);
     
-        System.out.println("task handling " + currentMember.toString());
         List<Task> allTasks = taskService.getAllTasks(currentMember);
         model.addAttribute("allTasks", allTasks);
         return "memberDash";

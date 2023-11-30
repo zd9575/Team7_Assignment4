@@ -10,25 +10,31 @@ import jakarta.persistence.*;
 @Entity
 public class Member {
 
+
+    // LACK OF FORM INPUT VALIDATION FOR REGISTRATION (ARCH BREAKER 4)
+    /* If each entity annotation such as email, is not designated to be "NotEmpty", the form
+    *  will accept null values to be inserted into the database. This is problematic because
+    *  it will break the requirements needed for the member's credentials.
+    */
     @Id
     @Email
-    @NotEmpty
+    // @NotEmpty
     @Column(name = "email")
     private String email;
 
-    @NotEmpty
+    // @NotEmpty
     @Column(name = "password")
     private String password;
 
-    @NotEmpty
+    // @NotEmpty
     @Column(name = "first_name")
     private String firstName;
 
-    @NotEmpty
+    // @NotEmpty
     @Column(name = "last_name")
     private String lastName;
 
-    @NotEmpty
+    // @NotEmpty
     @Column(name = "role")
     private String role;
 
