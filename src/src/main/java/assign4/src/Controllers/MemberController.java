@@ -31,9 +31,9 @@ public class MemberController {
     TaskService taskService;
 
 
-    @GetMapping("/handleLogin") 
+    @GetMapping("/handleLogin")
     public String handleLogin(@Valid @ModelAttribute("member") Member member,
-            Model model) {
+                              Model model) {
         if (member.getEmail() == null & member.getPassword() == null) {
             System.out.println("Please enter your login credentials");
         }
@@ -42,9 +42,9 @@ public class MemberController {
         if (verifyMember != null) { // Check verifyMember, not member
             // PASSWORD ENCRYPTION FAILURE (ARCH BREAKER 3)
             /* If the login password is not encoded, and the database password is, it will fail to login
-            *  passwordMatchFail will check if the passwords are the same, whereas passwordEncoder encodes
-            *  the raw password to compare with the encoded password
-            */
+             *  passwordMatchFail will check if the passwords are the same, whereas passwordEncoder encodes
+             *  the raw password to compare with the encoded password
+             */
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             boolean passwordsMatch = passwordEncoder.matches(member.getPassword(), verifyMember.getPassword());
 
@@ -55,7 +55,7 @@ public class MemberController {
                     // AUTHENTICATION FAILURE (ARCH BREAKER 1)
                     /*
                      * Users will try to log in but if the user is not added to the model object
-                     * of the spring boot controller, they will fail to login and be redirected 
+                     * of the spring boot controller, they will fail to login and be redirected
                      * back to the login page.
                      */
                     model.addAttribute("currentMember", verifyMember);
@@ -79,8 +79,8 @@ public class MemberController {
 
     @PostMapping("/login")
     public String postLogin(Model model, Member member,
-            @RequestParam(name = "loginButton", required = false) String loginButton,
-            @RequestParam(name = "registerButton", required = false) String registerButton) throws IOException {
+                            @RequestParam(name = "loginButton", required = false) String loginButton,
+                            @RequestParam(name = "registerButton", required = false) String registerButton) throws IOException {
         if (member != null) {
             if (loginButton != null) {
                 model.addAttribute("member",
@@ -116,7 +116,7 @@ public class MemberController {
             return "redirect:/login";
         }
     }
-    
+
     @GetMapping("/register")
     public String getRegister(Model model, Member member) {
         model.addAttribute("member", new Member(member.getEmail(), member.getFirstName(), member.getLastName(),
@@ -138,13 +138,16 @@ public class MemberController {
 
         // AUTHORIZATION FAILURE (ARCH BREAKER 2)
         /* If the task form fails to check the role of the current member logged in, it
-         * will result in an authorization failure. 
+         * will result in an authorization failure.
          */
-        // if(currentMember.getRole() != "Manager"){
-        //     List<Task> allTasks = taskService.getAllTasks(currentMember);
-        //     model.addAttribute("allTasks", allTasks);
-        //     return "memberDash";
-        // }
+//        if(currentMember == null){
+//            return "login";
+//        }
+        if(currentMember.getRole() != "Manager"){
+            List<Task> allTasks = taskService.getAllTasks(currentMember);
+            model.addAttribute("allTasks", allTasks);
+            return "login";
+        }
 
         Member assignedMember = task.getAssignedMember();
         model.addAttribute("members", memberService.getAllEmployees());
@@ -155,7 +158,7 @@ public class MemberController {
         task.setId(randomTaskId);
         task.setAssignedMember(assignedMember);
         taskService.saveTask(task);
-    
+
         List<Task> allTasks = taskService.getAllTasks(currentMember);
         model.addAttribute("allTasks", allTasks);
         return "memberDash";

@@ -2,7 +2,10 @@ package assign4.src;
 
 import assign4.src.Controllers.MemberController;
 import assign4.src.Models.Member;
+import assign4.src.Models.Task;
 import assign4.src.Repositories.MemberRepository;
+import assign4.src.Services.MemberService;
+import assign4.src.Services.TaskService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -27,6 +30,12 @@ class SrcApplicationTests {
 
 	@InjectMocks
 	private MemberController memberController;
+
+	@Mock
+	private MemberService memberService;
+
+	@Mock
+	private TaskService taskService;
 
 	//test case 1
 	@Test
@@ -54,5 +63,32 @@ class SrcApplicationTests {
 		verifyNoMoreInteractions(model);//Verify that there are no more interactions with the model after the expected interactions.
 
 	}
+	@Test
+	public void testTaskCreation() {
 
+		Member mockMember = new Member();
+		mockMember.setEmail("lv9591@rit.edu");
+		mockMember.setPassword("levi1234");
+		mockMember.setRole("Employee");
+		mockMember.setFirstName("Levi");
+		mockMember.setLastName("Ackerman");
+		System.out.println(mockMember.toString());
+
+		Task mockTask = new Task(); //create a task to simulate task creation
+		mockTask.setName("Laundry"); //enter task name
+		mockTask.setDescription("clean the laundry"); //enter description
+		mockTask.setAssignedMember(mockMember); //assign employee
+
+
+
+		model.addAttribute("currentMember", mockMember);
+
+		Member member = (Member) model.getAttribute("currentMember");
+		System.out.println(member.toString());
+		String viewName = memberController.postTaskHandling(mockTask, model);
+
+		assertEquals("login",viewName);
+
+
+	}
 }
