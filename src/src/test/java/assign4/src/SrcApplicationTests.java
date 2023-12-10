@@ -42,27 +42,25 @@ class SrcApplicationTests {
 	public void testHandleLoginSuccess() {
 
 		Member mockMember = new Member(); //create a member to simulate login
-		mockMember.setEmail("lv9591@rit.edu"); //enter email for login
-		mockMember.setPassword("levi1234"); //enter password for login
-		when(memberRepository.findByEmail("lv9591@rit.edu")).thenReturn(mockMember); //simulate a successful retrieval of a member by email.
-
-
+		mockMember.setEmail("james@gmail.com"); //enter email for login
+		mockMember.setPassword("password"); //enter password for login
+		mockMember.setRole("Employee");
+		when(memberRepository.findByEmail("james@gmail.com")).thenReturn(mockMember); //simulate a successful retrieval of a member by email.
 
 		String viewName = memberController.handleLogin(mockMember, model); //call handleLogin() method for testing
 
-
 		//use this if entered password and username are correct
-//		assertEquals("redirect:/memberPage", viewName); //check the returned value of handleLogin() method if password is right
-//		verify(model).addAttribute(eq("currentMember"), any(Member.class)); //check if an attribute named "currentMember" is added to model object
-//		verifyNoMoreInteractions(model); //Verify that there are no more interactions with the model after the expected interactions.
+		assertEquals("redirect:/memberPage", viewName); //check the returned value of handleLogin() method if password is right
+		verify(model).addAttribute(eq("currentMember"), any(Member.class)); //check if an attribute named "currentMember" is added to model object
+		verifyNoMoreInteractions(model); //Verify that there are no more interactions with the model after the expected interactions.
 
 		//use this if entered password and username are incorrect
-		assertEquals("login", viewName); //check the returned value of handleLogin() method if password is wrong
-		verify(model).addAttribute(eq("passwordError"), eq("Username or password is incorrect. Please try again!"));//check if an attribute named "passwordError" is added to model object
-		verify(model).addAttribute(eq("waitForLogin"), eq(true));//check if an attribute named "waitForLogin" is added to model object
-		verifyNoMoreInteractions(model);//Verify that there are no more interactions with the model after the expected interactions.
-
+		// assertEquals("login", viewName); //check the returned value of handleLogin() method if password is wrong
+		// verify(model).addAttribute(eq("passwordError"), eq("Username or password is incorrect. Please try again!"));//check if an attribute named "passwordError" is added to model object
+		// verify(model).addAttribute(eq("waitForLogin"), eq(true));//check if an attribute named "waitForLogin" is added to model object
+		// verifyNoMoreInteractions(model);//Verify that there are no more interactions with the model after the expected interactions.
 	}
+
 	@Test
 	public void testTaskCreation() {
 
@@ -72,23 +70,15 @@ class SrcApplicationTests {
 		mockMember.setRole("Employee");
 		mockMember.setFirstName("Levi");
 		mockMember.setLastName("Ackerman");
-		System.out.println(mockMember.toString());
 
 		Task mockTask = new Task(); //create a task to simulate task creation
 		mockTask.setName("Laundry"); //enter task name
 		mockTask.setDescription("clean the laundry"); //enter description
 		mockTask.setAssignedMember(mockMember); //assign employee
 
-
-
-		model.addAttribute("currentMember", mockMember);
-
-		Member member = (Member) model.getAttribute("currentMember");
-		System.out.println(member.toString());
-		String viewName = memberController.postTaskHandling(mockTask, model);
+		String viewName = memberController.postTaskHandling(mockTask, mockMember, model);
 
 		assertEquals("login",viewName);
-
 
 	}
 }

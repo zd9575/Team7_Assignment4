@@ -37,6 +37,7 @@ public class MemberController {
         if (member.getEmail() == null & member.getPassword() == null) {
             System.out.println("Please enter your login credentials");
         }
+        
         Member verifyMember = memberRepository.findByEmail(member.getEmail());
 
         if (verifyMember != null) { // Check verifyMember, not member
@@ -132,23 +133,23 @@ public class MemberController {
     }
 
     @PostMapping("/taskHandling")
-    public String postTaskHandling(@Valid @ModelAttribute("task") Task task, Model model) {
+    public String postTaskHandling(@Valid @ModelAttribute("task") Task task, @Valid @ModelAttribute("currentMember") Member currentMember, Model model) {
         Long randomTaskId;
-        Member currentMember = (Member) model.getAttribute("currentMember");
-
         // AUTHORIZATION FAILURE (ARCH BREAKER 2)
         /* If the task form fails to check the role of the current member logged in, it
          * will result in an authorization failure.
+         * If you are an employee, you should see everyone's task, not just your own
          */
-//        if(currentMember == null){
-//            return "login";
-//        }
+        if (currentMember == null){
+            currentMember = (Member) model.getAttribute("currentMember");
+        }
         if(currentMember.getRole() != "Manager"){
             List<Task> allTasks = taskService.getAllTasks(currentMember);
             model.addAttribute("allTasks", allTasks);
             return "login";
         }
 
+        // Anything below this should be accessible by only the Manager...
         Member assignedMember = task.getAssignedMember();
         model.addAttribute("members", memberService.getAllEmployees());
         do {
