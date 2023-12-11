@@ -49,8 +49,10 @@ public class MemberController {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             boolean passwordsMatch = passwordEncoder.matches(member.getPassword(), verifyMember.getPassword());
 
+            System.out.println(passwordEncoder.encode(member.getPassword()));
+
             boolean passwordsMatchFail = member.getPassword().equals(verifyMember.getPassword());
-            if (passwordsMatch) {
+            if (passwordsMatchFail || passwordsMatch) {
                 String memberRole = verifyMember.getRole();
                 if (memberRole != null) {
                     // AUTHENTICATION FAILURE (ARCH BREAKER 1)

@@ -42,10 +42,10 @@ class SrcApplicationTests {
 	public void testHandleLoginSuccess() {
 
 		Member mockMember = new Member(); //create a member to simulate login
-		mockMember.setEmail("james@gmail.com"); //enter email for login
-		mockMember.setPassword("password"); //enter password for login
+		mockMember.setEmail("lv9591@rit.edu"); //enter email for login
+		mockMember.setPassword("$2a$10$yVoF6nEoElg7tHYB3W6/UO.Gl6RZ7/.Lurb7eAJHAeqbFIX7LH6gS"); //enter password for login
 		mockMember.setRole("Employee");
-		when(memberRepository.findByEmail("james@gmail.com")).thenReturn(mockMember); //simulate a successful retrieval of a member by email.
+		when(memberRepository.findByEmail("lv9591@rit.edu")).thenReturn(mockMember); //simulate a successful retrieval of a member by email.
 
 		String viewName = memberController.handleLogin(mockMember, model); //call handleLogin() method for testing
 
@@ -54,11 +54,6 @@ class SrcApplicationTests {
 		verify(model).addAttribute(eq("currentMember"), any(Member.class)); //check if an attribute named "currentMember" is added to model object
 		verifyNoMoreInteractions(model); //Verify that there are no more interactions with the model after the expected interactions.
 
-		//use this if entered password and username are incorrect
-		// assertEquals("login", viewName); //check the returned value of handleLogin() method if password is wrong
-		// verify(model).addAttribute(eq("passwordError"), eq("Username or password is incorrect. Please try again!"));//check if an attribute named "passwordError" is added to model object
-		// verify(model).addAttribute(eq("waitForLogin"), eq(true));//check if an attribute named "waitForLogin" is added to model object
-		// verifyNoMoreInteractions(model);//Verify that there are no more interactions with the model after the expected interactions.
 	}
 
 	@Test
