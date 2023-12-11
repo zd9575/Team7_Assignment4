@@ -57,8 +57,9 @@
         </div>
     </nav>
     <br /><br />
-    <button th:if="${currentMember.role == 'Manager'}" id="toggleFormButton" onclick="toggleForm()">Create Task</button>
-<button th:if="${currentMember.role != 'Manager'}" onclick="alert('You are not authorized to click this button!')">Create Task</button>
+    <button id="toggleFormButton" onclick="toggleForm()">Create Task</button>
+    <!-- th:if="${currentMember.role == 'Manager'}"  -->
+<!-- <button th:if="${currentMember.role != 'Manager'}" onclick="alert('You are not authorized to click this button!')">Create Task</button> -->
 
 <form th:action="@{/taskHandling}" th:object="${task}" id="taskForm" method="post" role="form"
     th:disabled="${currentMember.role != 'Manager'}">

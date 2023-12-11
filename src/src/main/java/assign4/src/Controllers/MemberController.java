@@ -31,19 +31,36 @@ public class MemberController {
     TaskService taskService;
 
 
-    @GetMapping("/handleLogin") 
+    @GetMapping("/handleLogin")
     public String handleLogin(@Valid @ModelAttribute("member") Member member,
-            Model model) {
+                              Model model) {
         if (member.getEmail() == null & member.getPassword() == null) {
             System.out.println("Please enter your login credentials");
         }
+        
         Member verifyMember = memberRepository.findByEmail(member.getEmail());
 
         if (verifyMember != null) { // Check verifyMember, not member
+            // PASSWORD ENCRYPTION FAILURE (ARCH BREAKER 3)
+            /* If the login password is not encoded, and the database password is, it will fail to login
+             *  passwordMatchFail will check if the passwords are the same, whereas passwordEncoder encodes
+             *  the raw password to compare with the encoded password
+             */
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            if (passwordEncoder.matches(member.getPassword(), verifyMember.getPassword())) {
+            boolean passwordsMatch = passwordEncoder.matches(member.getPassword(), verifyMember.getPassword());
+
+            System.out.println(passwordEncoder.encode(member.getPassword()));
+
+            boolean passwordsMatchFail = member.getPassword().equals(verifyMember.getPassword());
+            if (passwordsMatchFail || passwordsMatch) {
                 String memberRole = verifyMember.getRole();
                 if (memberRole != null) {
+                    // AUTHENTICATION FAILURE (ARCH BREAKER 1)
+                    /*
+                     * Users will try to log in but if the user is not added to the model object
+                     * of the spring boot controller, they will fail to login and be redirected
+                     * back to the login page.
+                     */
                     model.addAttribute("currentMember", verifyMember);
                     return "redirect:/memberPage";
                 }
@@ -65,8 +82,8 @@ public class MemberController {
 
     @PostMapping("/login")
     public String postLogin(Model model, Member member,
-            @RequestParam(name = "loginButton", required = false) String loginButton,
-            @RequestParam(name = "registerButton", required = false) String registerButton) throws IOException {
+                            @RequestParam(name = "loginButton", required = false) String loginButton,
+                            @RequestParam(name = "registerButton", required = false) String registerButton) throws IOException {
         if (member != null) {
             if (loginButton != null) {
                 model.addAttribute("member",
@@ -102,7 +119,7 @@ public class MemberController {
             return "redirect:/login";
         }
     }
-    
+
     @GetMapping("/register")
     public String getRegister(Model model, Member member) {
         model.addAttribute("member", new Member(member.getEmail(), member.getFirstName(), member.getLastName(),
@@ -118,10 +135,23 @@ public class MemberController {
     }
 
     @PostMapping("/taskHandling")
-    public String postTaskHandling(@Valid @ModelAttribute("task") Task task, Model model) {
+    public String postTaskHandling(@Valid @ModelAttribute("task") Task task, @Valid @ModelAttribute("currentMember") Member currentMember, Model model) {
         Long randomTaskId;
-        Member currentMember = (Member) model.getAttribute("currentMember");
+        // AUTHORIZATION FAILURE (ARCH BREAKER 2)
+        /* If the task form fails to check the role of the current member logged in, it
+         * will result in an authorization failure.
+         * If you are an employee, you should see everyone's task, not just your own
+         */
+        if (currentMember == null){
+            currentMember = (Member) model.getAttribute("currentMember");
+        }
+        if(currentMember.getRole() == "Manager"){
+            List<Task> allTasks = taskService.getAllTasks(currentMember);
+            model.addAttribute("allTasks", allTasks);
+            return "login";
+        }
 
+        // Anything below this should be accessible by only the Manager...
         Member assignedMember = task.getAssignedMember();
         model.addAttribute("members", memberService.getAllEmployees());
         do {
@@ -131,8 +161,7 @@ public class MemberController {
         task.setId(randomTaskId);
         task.setAssignedMember(assignedMember);
         taskService.saveTask(task);
-    
-        System.out.println("task handling " + currentMember.toString());
+
         List<Task> allTasks = taskService.getAllTasks(currentMember);
         model.addAttribute("allTasks", allTasks);
         return "memberDash";

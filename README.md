@@ -48,3 +48,21 @@ As mentioned before, please ensure your database settings, maven, and applicatio
 - Zoe: I ran this program on http://localhost:8080/
 4) Before you run the program again, change the application.properties from "create" to "update"
 
+
+## Architecture Breakers Identified:
+(Detailed in the MemberController.java and Member.java files)
+Authentication failure - Missing Model Attribute (TEST CASE 1):
+
+Users will try to log in but if the user is not added to the model object of the spring boot controller, they will fail to login and be redirected back to the login page.
+
+Authorization failure - Employee Submitting Task Form  (TEST CASE 2):
+
+If an employee can submit a task form when only managers should have that privilege, it should cause an authorization failure. This is a flaw in how roles and permissions are assigned and checked. For HW4 we had a button only managers can select, however, with the architecture breaker, it allows anyone to select the button to create a task.
+
+Password Encoder Not Applied During Login:
+
+If the password encoder (Spring Security component) is not applied during login, it will try to compare an encoded password (from database) with the unencoded login password. 
+
+Lack of Form Input Validation on the Task Creation Page
+
+If there’s a null value or SQL injection entered into the form, it should not be allowed as a valid form input. It should contain correct user names, emails, etc. in order to be saved into the database. If the form does allow the submission of the null values, it’s an architecture breaker.
