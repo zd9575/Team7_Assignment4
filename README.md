@@ -3,6 +3,12 @@ Members : Vidit Naithani (vn9591), Zoe DeTrani (zd9575), Aayush Panchal (ap9115)
 
 The purpose of this assignment is to create a web app that keeps track of anonymous users after the first user request. The users who access the system are verified through an authentication and authorization process.
 
+# Architechture
+![image](https://github.com/zd9575/Team7_Assignment4/assets/40785339/0f22aa3f-5b59-4156-a69f-a8f7207078b8)
+
+
+
+
 # Set Up
 ## 1) PostGresSQL
 Download : https://www.postgresql.org/download/
