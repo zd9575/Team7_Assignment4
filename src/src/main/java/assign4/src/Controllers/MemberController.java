@@ -145,7 +145,7 @@ public class MemberController {
         if (currentMember == null){
             currentMember = (Member) model.getAttribute("currentMember");
         }
-        if(currentMember.getRole() != "Manager"){
+        if(currentMember.getRole() == "Manager"){
             List<Task> allTasks = taskService.getAllTasks(currentMember);
             model.addAttribute("allTasks", allTasks);
             return "login";

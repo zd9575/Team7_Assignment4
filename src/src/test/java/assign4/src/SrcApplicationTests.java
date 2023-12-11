@@ -42,10 +42,10 @@ class SrcApplicationTests {
 	public void testHandleLoginSuccess() {
 
 		Member mockMember = new Member(); //create a member to simulate login
-		mockMember.setEmail("lv9591@rit.edu"); //enter email for login
-		mockMember.setPassword("$2a$10$yVoF6nEoElg7tHYB3W6/UO.Gl6RZ7/.Lurb7eAJHAeqbFIX7LH6gS"); //enter password for login
-		mockMember.setRole("Employee");
-		when(memberRepository.findByEmail("lv9591@rit.edu")).thenReturn(mockMember); //simulate a successful retrieval of a member by email.
+		mockMember.setEmail("tod@gmail.com"); //enter email for login
+		mockMember.setPassword("$2a$10$R2Wbg6fMy52JKvqhUyWQ8..BmuIO0krc2cz45FmSvzCegM5tne89a"); //enter password for login
+		mockMember.setRole("Manager");
+		when(memberRepository.findByEmail("tod@gmail.com")).thenReturn(mockMember); //simulate a successful retrieval of a member by email.
 
 		String viewName = memberController.handleLogin(mockMember, model); //call handleLogin() method for testing
 
